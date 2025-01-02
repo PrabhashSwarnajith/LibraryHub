@@ -11,8 +11,20 @@ import com.libraryhub.library_backend.service.UserService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 @AllArgsConstructor
-public class UserController {
+public class AuthController {
+
+    private final UserService userService;
+
+    @PostMapping(value = "/singup")
+    public UserDTO registerUser(@RequestBody UserDTO userRequest) {
+        return userService.registerUser(userRequest);
+    }
+
+    @PostMapping(value = "/login")
+    public UserDTO login(@RequestBody UserDTO userRequest) {
+        return userService.verify(userRequest);
+    }
 
 }
