@@ -30,8 +30,6 @@ public class User {
     private String password;
     private String name;
     private Role role;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate registeredDate;
     private Boolean isActive;
 }
