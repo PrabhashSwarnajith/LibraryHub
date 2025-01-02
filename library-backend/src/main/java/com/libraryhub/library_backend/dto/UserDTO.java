@@ -1,18 +1,26 @@
 package com.libraryhub.library_backend.dto;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.libraryhub.library_backend.model.Role;
+
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
     private String id;
     private String username;
     private String email;
+    private String password;
     private String name;
-    private String role;
+    private Role role;
     private String registeredDate;
     private Boolean isActive;
+    private String error;
+    private String message;
+    private String token;
+    private String refreshToken;
+    private String expirationTime;
 }
