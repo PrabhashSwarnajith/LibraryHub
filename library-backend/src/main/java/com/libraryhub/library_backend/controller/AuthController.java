@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libraryhub.library_backend.dto.AuthDTO;
 import com.libraryhub.library_backend.dto.UserDTO;
 import com.libraryhub.library_backend.service.UserService;
 
@@ -23,8 +24,8 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    public UserDTO login(@RequestBody UserDTO userRequest) {
-        return userService.verify(userRequest);
+    public AuthDTO login(@RequestBody UserDTO userRequest) {
+        return userService.login(userRequest);
     }
 
 }
