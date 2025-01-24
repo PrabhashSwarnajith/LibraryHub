@@ -18,9 +18,5 @@ public class UserDTO {
     private Role role;
     private String registeredDate;
     private Boolean isActive;
-    private String error;
     private String message;
-    private String token;
-    private String refreshToken;
-    private String expirationTime;
 }
