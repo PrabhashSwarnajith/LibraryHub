@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +19,13 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@Slf4j
 public class JWTService {
 
-    private String secretkey = "";
+    private String secretkey = "843567893696976453275974432697R634976R738467TR678T34865R6834R8763T478378637664538745673865783678548735687R3";
+
+    private static final long EXPIRATION_TIME = 30 * 60 * 1000;
+    private static final long REFRESH_EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 hours for refresh token
 
     public JWTService() {
 
@@ -32,18 +38,46 @@ public class JWTService {
         }
     }
 
-    public String generateToken(String username) {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return Jwts.builder()
-                .claims()
-                .add(claims)
-                .subject(username)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
-                .and()
-                .signWith(getKey())
-                .compact();
 
+        try {
+            String token = Jwts.builder()
+                    .claims()
+                    .add(claims)
+                    .subject(userDetails.getUsername())
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                    .and()
+                    .signWith(getKey())
+                    .compact();
+
+            log.info("Token generated successfully for user: " + userDetails.getUsername());
+            return token;
+        } catch (Exception e) {
+            log.error("Error generating token for user: " + userDetails.getUsername());
+            throw new RuntimeException("Error generating JWT token", e);
+        }
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+
+        try {
+            String refreshToken = Jwts.builder()
+                    .claims(claims)
+                    .subject(userDetails.getUsername())
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .expiration(new Date(System.currentTimeMillis() + REFRESH_EXPIRATION_TIME))
+                    .signWith(getKey())
+                    .compact();
+
+            log.info("Refresh token generated successfully for user: " + userDetails.getUsername());
+            return refreshToken;
+        } catch (Exception e) {
+            log.error("Error generating refresh token for user: " + userDetails.getUsername());
+            throw new RuntimeException("Error generating refresh JWT token", e);
+        }
     }
 
     private SecretKey getKey() {
