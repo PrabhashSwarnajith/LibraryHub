@@ -1,28 +1,31 @@
 import axios from "axios";
 
- const BASE_URL = "http://localhost:8082/api"
+const BASE_URL = "http://localhost:8082/api";
 
-class AuthService{
+class AuthService {
 
-    static async login(username, password){
-        try{
-            const response = await axios.post(`${BASE_URL}/auth/login`,{username, password});
-           return response.data; 
-        }catch(error){
+    static async login(email, password) {
+        try {
+            const response = await axios.post(`${BASE_URL}/auth/login`, { email, password });
+            return response.data;
+        } catch (error) {
             console.error(error);
-            // throw error;
-        }
+            }
     }
 
-    static async singup(){
-        try{
-            const response = await axios.post(`${BASE_URL}/auth/singup`,{ user});
-           return response.data; 
-        }catch(error){
-            console.error(error);
-            // throw error;
+    static async signup(formData) {  // Corrected "singup" to "signup"
+        try {
+            const response = await axios.post(`${BASE_URL}/auth/register`,formData);
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                throw error.response.data; // Throw backend response error
+              } else {
+                throw { message: "Network error or server is unavailable." };
+              }
         }
     }
 
 }
+
 export default AuthService;
