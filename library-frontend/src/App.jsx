@@ -1,29 +1,22 @@
-import React,{useState} from "react"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage"
+import RegistrationPage from "./pages/RegistrationPage"
+import ProfilePage from "./pages/ProfilePage"
 
 function App() {
 
-  const [text , setText] = useState(12);
-  const change = (e) =>{
-    console.log(event.target.value);
-
-    setText(e.target.value);
-  }
-
-
-  return (
-    <div>
-      <h1>Library</h1>
-      <p>Books in your library</p>
-      
-      <div>
-      <input type="text" value={text} onChange={change} />
+  return (    
+    <BrowserRouter>
+      <div className="App">
+        <Routes>
+          <Route exact path="/" element={<LoginPage />} />
+          <Route exact path="/register" element={<RegistrationPage />} />
+          <Route exact path="/login" element={<LoginPage />} />
+          <Route exact path="/profile" element={<ProfilePage />} />
+        </Routes>
       </div>
-      <div>
-      <p>{text}</p>
-      </div>
-    </div>
-    
-  )
+    </BrowserRouter>
+  );
 }
 
 export default App
