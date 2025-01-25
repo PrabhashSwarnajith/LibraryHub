@@ -15,7 +15,7 @@ import com.libraryhub.library_backend.model.User;
 import com.libraryhub.library_backend.model.UserPrinciple;
 import com.libraryhub.library_backend.repository.UserRepository;
 import com.libraryhub.library_backend.service.JWTService;
-import com.libraryhub.library_backend.service.UserService;
+import com.libraryhub.library_backend.service.AuthService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final JWTService jwtService;
@@ -40,16 +40,14 @@ public class UserServiceImpl implements UserService {
         if (authentication.isAuthenticated()) {
 
             User user = userRepository.findByEmail(userRequest.getEmail());
-            if (user == null) {
-                throw new RuntimeException("User not found.");
-            }
+
+            log.info("User {} verified successfully.", userRequest.getName());
 
             UserPrinciple userPrinciple = new UserPrinciple(user);
 
             String accessToken = jwtService.generateToken(userPrinciple);
             String refreshToken = jwtService.generateRefreshToken(userPrinciple);
 
-            log.info("User {} verified successfully.", userRequest.getEmail());
             return AuthDTO.builder()
                     .userId(user.getId())
                     .role(user.getRole())
@@ -57,27 +55,27 @@ public class UserServiceImpl implements UserService {
                     .refreshToken(refreshToken)
                     .expirationTime("24Hrs")
                     .message("Successfully Logged In")
+                    .statusCode("200")
                     .build();
-        } else {
-            log.warn("Authentication failed for user {}", userRequest.getEmail());
-            throw new RuntimeException("Invalid credentials.");
-        }
+        } 
+        return AuthDTO.builder()
+                .message("Invalid Credentials")
+                .statusCode("401")
+                .build();
     }
 
     @Transactional
     @Override
     public UserDTO registerUser(UserDTO userRequest) {
 
-        if (userRepository.existsByUsername(userRequest.getUsername())) {
-            throw new DuplicateResourceException("Username already exists.");
-        }
+        
 
         if (userRepository.existsByEmail(userRequest.getEmail())) {
             throw new DuplicateResourceException("Email already registered.");
         }
 
         User user = User.builder()
-                .username(userRequest.getUsername())
+                
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())
                 .role(userRequest.getRole())
@@ -86,10 +84,10 @@ public class UserServiceImpl implements UserService {
                 .isActive(true)
                 .build();
         userRepository.save(user);
-        log.info("User {} registered successfully.", user.getUsername());
+        log.info("User {} registered successfully.", user.getName());
 
         return UserDTO.builder()
-                .id(user.getId())
+                .statusCode("200")
                 .message("User registered successfully.")
                 .build();
 

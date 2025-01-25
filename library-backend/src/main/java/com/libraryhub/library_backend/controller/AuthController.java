@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.libraryhub.library_backend.dto.AuthDTO;
 import com.libraryhub.library_backend.dto.UserDTO;
-import com.libraryhub.library_backend.service.UserService;
+import com.libraryhub.library_backend.service.AuthService;
 
 import lombok.AllArgsConstructor;
 
@@ -16,9 +16,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService userService;
 
-    @PostMapping(value = "/singup")
+    @PostMapping(value = "/register")
     public UserDTO registerUser(@RequestBody UserDTO userRequest) {
         return userService.registerUser(userRequest);
     }

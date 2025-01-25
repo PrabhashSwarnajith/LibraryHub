@@ -18,4 +18,5 @@ public class AuthDTO {
     private String refreshToken;
     private String expirationTime;
     private String message;
+    private String statusCode;
 }

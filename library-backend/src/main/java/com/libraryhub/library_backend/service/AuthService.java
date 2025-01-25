@@ -3,7 +3,7 @@ package com.libraryhub.library_backend.service;
 import com.libraryhub.library_backend.dto.AuthDTO;
 import com.libraryhub.library_backend.dto.UserDTO;
 
-public interface UserService {
+public interface AuthService {
 
     AuthDTO login(UserDTO userRequest);
 
