@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mongodb.lang.NonNull;
 
 import lombok.AllArgsConstructor;
@@ -22,10 +21,6 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     private String id;
-
-    @Indexed(unique = true)
-    @NonNull
-    private String username;
 
     @NonNull
     @Indexed(unique = true)

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.libraryhub.library_backend.dto.UserDTO;
-import com.libraryhub.library_backend.service.UserService;
+import com.libraryhub.library_backend.service.AuthService;
 
 import lombok.AllArgsConstructor;
 

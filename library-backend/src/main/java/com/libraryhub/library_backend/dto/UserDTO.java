@@ -11,7 +11,6 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
     private String id;
-    private String username;
     private String email;
     private String password;
     private String name;
@@ -19,4 +18,5 @@ public class UserDTO {
     private String registeredDate;
     private Boolean isActive;
     private String message;
+    private String statusCode;
 }
